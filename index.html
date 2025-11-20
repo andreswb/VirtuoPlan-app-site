@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VirtuoPlan - Music Practice Tracker | Musik-Übungs-Tracker | Rastreador de Práctica Musical</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; color: #333; }
+    header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    header h1 { margin: 0; font-size: 20px; display: flex; align-items: center; }
+    header h1 img { width: 32px; height: 32px; margin-right: 10px; border-radius: 6px; }
+    nav a { color: white; margin: 0 10px; text-decoration: none; font-weight: 600; transition: opacity 0.3s; }
+    nav a:hover { opacity: 0.8; text-decoration: underline; }
+    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    h2 { color: #222; font-size: 2em; margin-bottom: 20px; }
+    h3 { color: #444; margin-top: 30px; font-size: 1.4em; }
+    ul { margin-left: 20px; line-height: 2; }
+    ul li { margin-bottom: 8px; }
+    a.button { display: inline-block; padding: 12px 30px; margin: 20px 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: transform 0.3s, box-shadow 0.3s; }
+    a.button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); }
+    .hidden { display: none; }
+    footer { text-align: center; padding: 20px; font-size: 0.9em; color: #555; border-top: 1px solid #ccc; margin-top: 40px; }
+    select { padding: 8px 12px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); color: white; font-weight: 600; cursor: pointer; }
+    select option { color: #333; }
+    .faq-item { margin-bottom: 25px; background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #667eea; }
+    .faq-item strong { color: #667eea; font-size: 1.1em; display: block; margin-bottom: 10px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0; }
+    .feature-card { background: #f8f9fa; padding: 20px; border-radius: 10px; border: 2px solid #e9ecef; }
+    .feature-card h4 { color: #667eea; margin-top: 0; }
+    .note { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 5px; }
+    .note strong { color: #856404; }
+    .highlight-box { background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%); border: 2px solid #667eea; padding: 20px; border-radius: 10px; margin: 20px 0; }
+    .hero { background: linear-gradient(135deg, rgba(102,126,234,0.05) 0%, rgba(118,75,162,0.05) 100%); padding: 40px 20px; border-radius: 15px; margin-bottom: 40px; text-align: center; }
+    .hero h2 { margin-top: 0; color: #667eea; }
+  </style>
+  
+<script>
+  function switchLanguage(lang) {
+    document.querySelectorAll('.lang').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.lang-' + lang).forEach(el => el.classList.remove('hidden'));
+    document.getElementById('lang-selector').value = lang;
+  }
+
+  function showSection(section) {
+    document.querySelectorAll('.section').forEach(el => el.classList.add('hidden'));
+    const target = document.getElementById(section);
+    if (target) target.classList.remove('hidden');
+  }
+
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  window.onload = function() {
+    const hash = window.location.hash.substring(1);
+    const lang = getQueryParam('lang');
+
+    if (hash === 'privacy') showSection('privacy');
+    else if (hash === 'support') showSection('support');
+    else showSection('home');
+    
+    switchLanguage(lang === 'de' || lang === 'es' ? lang : 'en');
+  }
+</script>
+
+</head>
+<body>
+  <header>
+    <h1>
+      <img src="favicon.ico" alt="VirtuoPlan Logo">
+      VirtuoPlan
+    </h1>
+    <nav>
+      <a href="#home" onclick="showSection('home')">Home</a>
+      <a href="#support" onclick="showSection('support')">Support</a>
+      <a href="#privacy" onclick="showSection('privacy')">Privacy Policy</a>
+    </nav>
+    <div>
+      <select id="lang-selector" onchange="switchLanguage(this.value)">
+        <option value="en" selected>English</option>
+        <option value="de">Deutsch</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- HOME SECTION -->
+    <div id="home" class="section">
+
+      <!-- English -->
+      <div class="lang lang-en">
+        <div class="hero">
+          <h2>🎵 Master Your Music Practice</h2>
+          <p style="font-size: 1.2em; color: #555;">Your complete companion for structured, effective music practice</p>
+        </div>
+
+        <h2>VirtuoPlan - Music Practice Tracker</h2>
+        <p>Transform your music practice with VirtuoPlan, the comprehensive app designed specifically for serious musicians. Track your progress, stay organized, and achieve your musical goals with intelligent practice planning.</p>
+        
+        <h3>Why Choose VirtuoPlan?</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>📅 Smart Practice Planning</h4>
+            <p>Create structured practice schedules with customizable weekly goals and practice type allocations.</p>
+          </div>
+          <div class="feature-card">
+            <h4>⏱️ Session Tracking</h4>
+            <p>Track your practice sessions with pause/resume functionality and automatic time logging.</p>
+          </div>
+          <div class="feature-card">
+            <h4>🎼 Built-in Metronome</h4>
+            <p>Professional metronome with Italian tempo markings and multiple time signatures (4/4, 3/4, 6/8, and more).</p>
+          </div>
+          <div class="feature-card">
+            <h4>🎸 Chromatic Tuner</h4>
+            <p>Accurate tuner with multiple tuning standards (A=440, 442, 443, 444 Hz) and transposition support for various instruments.</p>
+          </div>
+          <div class="feature-card">
+            <h4>📚 Musical Glossary</h4>
+            <p>Comprehensive glossary of Italian musical terms with translations in English, German, and Spanish.</p>
+          </div>
+          <div class="feature-card">
+            <h4>📊 Progress Analytics</h4>
+            <p>Monitor your practice time, track multiple instruments, and view your progress over time.</p>
+          </div>
+          <div class="feature-card">
+            <h4>🔔 Smart Reminders</h4>
+            <p>Get notifications for scheduled practice sessions to stay on track with your goals.</p>
+          </div>
+          <div class="feature-card">
+            <h4>🔒 Complete Privacy</h4>
+            <p>All data stays on your device. No cloud sync, no data collection, complete privacy.</p>
+          </div>
+        </div>
+
+        <h3>Core Features</h3>
+        <ul>
+          <li><strong>Instrument Management:</strong> Track practice time for multiple instruments</li>
+          <li><strong>Practice Plans:</strong> Create weekly schedules with specific practice type allocations</li>
+          <li><strong>Session Tracking:</strong> Start, pause, resume, and end practice sessions with automatic time logging</li>
+          <li><strong>Professional Metronome:</strong> Italian tempo markings, tap tempo, and 11 time signatures</li>
+          <li><strong>Chromatic Tuner:</strong> Real-time pitch detection with multiple tuning standards and transposition</li>
+          <li><strong>Musical Glossary:</strong> 100+ Italian musical terms with translations</li>
+          <li><strong>Widgets:</strong> See today's practice schedule at a glance on your home screen</li>
+          <li><strong>Multilingual:</strong> Full support for English, German, and Spanish</li>
+        </ul>
+
+        <h3>Perfect For</h3>
+        <ul>
+          <li>🎻 Classical musicians and conservatory students</li>
+          <li>🎸 Private music teachers organizing student practice</li>
+          <li>🎹 Music students preparing for exams and auditions</li>
+          <li>🎺 Wind orchestra and ensemble members</li>
+          <li>🎵 Anyone serious about improving their musical skills</li>
+        </ul>
+
+        <h3>Practice Types</h3>
+        <p>Allocate your practice time across five key areas:</p>
+        <ul>
+          <li><strong>Technique:</strong> Scales, exercises, technical studies</li>
+          <li><strong>Sound Development:</strong> Tone quality and intonation work</li>
+          <li><strong>Repertoire:</strong> Learning and refining pieces</li>
+          <li><strong>Ear Training:</strong> Developing listening skills</li>
+          <li><strong>Performance Preparation:</strong> Run-throughs and concert prep</li>
+        </ul>
+
+        <div class="note">
+          <strong>Note:</strong> VirtuoPlan is designed for serious musicians who want to practice effectively. It's not just a timer - it's a complete practice management system that helps you stay organized and motivated.
+        </div>
+
+        <a href="https://apps.apple.com/app/id6755394560" class="button">Download on the App Store</a>
+      </div>
+
+      <!-- German -->
+      <div class="lang lang-de hidden">
+        <div class="hero">
+          <h2>🎵 Meistere deine Musikpraxis</h2>
+          <p style="font-size: 1.2em; color: #555;">Dein vollständiger Begleiter für strukturiertes, effektives Musiküben</p>
+        </div>
+
+        <h2>VirtuoPlan - Musik-Übungs-Tracker</h2>
+        <p>Transformiere deine Musikpraxis mit VirtuoPlan, der umfassenden App speziell für ernsthafte Musiker. Verfolge deinen Fortschritt, bleib organisiert und erreiche deine musikalischen Ziele mit intelligenter Übungsplanung.</p>
+        
+        <h3>Warum VirtuoPlan Wählen?</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>📅 Intelligente Übungsplanung</h4>
+            <p>Erstelle strukturierte Übungspläne mit anpassbaren Wochenzielen und Übungstyp-Zuteilungen.</p>
+          </div>
+          <div class="feature-card">
+            <h4>⏱️ Sitzungs-Tracking</h4>
+            <p>Verfolge deine Übungssitzungen mit Pause/Fortsetzen-Funktion und automatischer Zeiterfassung.</p>
+          </div>
+          <div class="feature-card">
+            <h4>🎼 Eingebautes Metronom</h4>
+            <p>Professionelles Metronom mit italienischen Tempobezeichnungen und mehreren Taktarten (4/4, 3/4, 6/8 und mehr).</p>
+          </div>
+          <div class="feature-card">
+            <h4>🎸 Chromatisches Stimmgerät</h4>
+            <p>Präzises Stimmgerät mit mehreren Stimmstandards (A=440, 442, 443, 444 Hz) und Transposition für verschiedene Instrumente.</p>
+          </div>
+          <div class="feature-card">
+            <h4>📚 Musikalisches Glossar</h4>
+            <p>Umfassendes Glossar italienischer Musikbegriffe mit Übersetzungen in Deutsch, Englisch und Spanisch.</p>
+          </div>
+          <div class="feature-card">
+            <h4>📊 Fortschritts-Analysen</h4>
+            <p>Überwache deine Übungszeit, verfolge mehrere Instrumente und sieh deinen Fortschritt im Zeitverlauf.</p>
+          </div>
+          <div class="feature-card">
+            <h4>🔔 Intelligente Erinnerungen</h4>
+            <p>Erhalte Benachrichtigungen für geplante Übungssitzungen, um deine Ziele zu erreichen.</p>
+          </div>
+          <div class="feature-card">
+            <h4>🔒 Vollständige Privatsphäre</h4>
+            <p>Alle Daten bleiben auf deinem Gerät. Keine Cloud-Sync, keine Datenerfassung, vollständige Privatsphäre.</p>
+          </div>
+        </div>
+
+        <h3>Hauptfunktionen</h3>
+        <ul>
+          <li><strong>Instrumentenverwaltung:</strong> Verfolge Übungszeit für mehrere Instrumente</li>
+          <li><strong>Übungspläne:</strong> Erstelle wöchentliche Zeitpläne mit spezifischen Übungstyp-Zuteilungen</li>
+          <li><strong>Sitzungs-Tracking:</strong> Starten, pausieren, fortsetzen und beenden von Übungssitzungen mit automatischer Zeiterfassung</li>
+          <li><strong>Professionelles Metronom:</strong> Italienische Tempobezeichnungen, Tap-Tempo und 11 Taktarten</li>
+          <li><strong>Chromatisches Stimmgerät:</strong> Echtzeit-Tonhöhenerkennung mit mehreren Stimmstandards und Transposition</li>
+          <li><strong>Musikalisches Glossar:</strong> 100+ italienische Musikbegriffe mit Übersetzungen</li>
+          <li><strong>Widgets:</strong> Sieh den heutigen Übungsplan auf einen Blick auf deinem Startbildschirm</li>
+          <li><strong>Mehrsprachig:</strong> Vollständige Unterstützung für Deutsch, Englisch und Spanisch</li>
+        </ul>
+
+        <h3>Perfekt Für</h3>
+        <ul>
+          <li>🎻 Klassische Musiker und Konservatoriumsstudenten</li>
+          <li>🎸 Privatmusiklehrer zur Organisation von Schülerübungen</li>
+          <li>🎹 Musikstudenten zur Vorbereitung auf Prüfungen und Vorspielen</li>
+          <li>🎺 Blasorchester- und Ensemble-Mitglieder</li>
+          <li>🎵 Alle, die ihre musikalischen Fähigkeiten ernsthaft verbessern wollen</li>
+        </ul>
+
+        <h3>Übungstypen</h3>
+        <p>Verteile deine Übungszeit auf fünf Schlüsselbereiche:</p>
+        <ul>
+          <li><strong>Technik:</strong> Tonleitern, Übungen, technische Studien</li>
+          <li><strong>Klangentwicklung:</strong> Tonqualität und Intonationsarbeit</li>
+          <li><strong>Repertoire:</strong> Stücke lernen und verfeinern</li>
+          <li><strong>Gehörbildung:</strong> Entwicklung des Gehörs</li>
+          <li><strong>Auftrittsvorbereitung:</strong> Durchläufe und Konzertvorbereitung</li>
+        </ul>
+
+        <div class="note">
+          <strong>Hinweis:</strong> VirtuoPlan ist für ernsthafte Musiker konzipiert, die effektiv üben möchten. Es ist nicht nur ein Timer - es ist ein vollständiges Übungsverwaltungssystem, das dir hilft, organisiert und motiviert zu bleiben.
+        </div>
+
+        <a href="https://apps.apple.com/app/id6755394560" class="button">Im App Store herunterladen</a>
+      </div>
+
+      <!-- Spanish -->
+      <div class="lang lang-es hidden">
+        <div class="hero">
+          <h2>🎵 Domina tu Práctica Musical</h2>
+          <p style="font-size: 1.2em; color: #555;">Tu compañero completo para una práctica musical estructurada y efectiva</p>
+        </div>
+
+        <h2>VirtuoPlan - Rastreador de Práctica Musical</h2>
+        <p>Transforma tu práctica musical con VirtuoPlan, la app integral diseñada específicamente para músicos serios. Rastrea tu progreso, mantente organizado y alcanza tus metas musicales con planificación de práctica inteligente.</p>
+        
+        <h3>¿Por Qué Elegir VirtuoPlan?</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4>📅 Planificación Inteligente</h4>
+            <p>Crea horarios de práctica estructurados con objetivos semanales personalizables y asignaciones de tipos de práctica.</p>
+          </div>
+          <div class="feature-card">
+            <h4>⏱️ Seguimiento de Sesiones</h4>
+            <p>Rastrea tus sesiones de práctica con funcionalidad de pausar/reanudar y registro automático de tiempo.</p>
+          </div>
+          <div class="feature-card">
+            <h4>🎼 Metrónomo Integrado</h4>
+            <p>Metrónomo profesional con marcaciones de tempo italianas y múltiples compases (4/4, 3/4, 6/8 y más).</p>
+          </div>
+          <div class="feature-card">
+            <h4>🎸 Afinador Cromático</h4>
+            <p>Afinador preciso con múltiples estándares de afinación (A=440, 442, 443, 444 Hz) y soporte de transposición para varios instrumentos.</p>
+          </div>
+          <div class="feature-card">
+            <h4>📚 Glosario Musical</h4>
+            <p>Glosario completo de términos musicales italianos con traducciones en Español, Inglés y Alemán.</p>
+          </div>
+          <div class="feature-card">
+            <h4>📊 Análisis de Progreso</h4>
+            <p>Monitorea tu tiempo de práctica, rastrea múltiples instrumentos y visualiza tu progreso a lo largo del tiempo.</p>
+          </div>
+          <div class="feature-card">
+            <h4>🔔 Recordatorios Inteligentes</h4>
+            <p>Recibe notificaciones para sesiones de práctica programadas para mantenerte en el camino hacia tus metas.</p>
+          </div>
+          <div class="feature-card">
+            <h4>🔒 Privacidad Completa</h4>
+            <p>Todos los datos permanecen en tu dispositivo. Sin sincronización en la nube, sin recopilación de datos, privacidad completa.</p>
+          </div>
+        </div>
+
+        <h3>Funciones Principales</h3>
+        <ul>
+          <li><strong>Gestión de Instrumentos:</strong> Rastrea tiempo de práctica para múltiples instrumentos</li>
+          <li><strong>Planes de Práctica:</strong> Crea horarios semanales con asignaciones específicas de tipos de práctica</li>
+          <li><strong>Seguimiento de Sesiones:</strong> Iniciar, pausar, reanudar y finalizar sesiones de práctica con registro automático de tiempo</li>
+          <li><strong>Metrónomo Profesional:</strong> Marcaciones de tempo italianas, tap tempo y 11 compases</li>
+          <li><strong>Afinador Cromático:</strong> Detección de tono en tiempo real con múltiples estándares de afinación y transposición</li>
+          <li><strong>Glosario Musical:</strong> 100+ términos musicales italianos con traducciones</li>
+          <li><strong>Widgets:</strong> Ve el horario de práctica de hoy de un vistazo en tu pantalla de inicio</li>
+          <li><strong>Multilingüe:</strong> Soporte completo para Español, Inglés y Alemán</li>
+        </ul>
+
+        <h3>Perfecto Para</h3>
+        <ul>
+          <li>🎻 Músicos clásicos y estudiantes de conservatorio</li>
+          <li>🎸 Profesores privados de música organizando práctica de estudiantes</li>
+          <li>🎹 Estudiantes de música preparándose para exámenes y audiciones</li>
+          <li>🎺 Miembros de orquesta de viento y conjuntos</li>
+          <li>🎵 Cualquiera serio sobre mejorar sus habilidades musicales</li>
+        </ul>
+
+        <h3>Tipos de Práctica</h3>
+        <p>Asigna tu tiempo de práctica en cinco áreas clave:</p>
+        <ul>
+          <li><strong>Técnica:</strong> Escalas, ejercicios, estudios técnicos</li>
+          <li><strong>Desarrollo del Sonido:</strong> Trabajo de calidad de tono y entonación</li>
+          <li><strong>Repertorio:</strong> Aprender y refinar piezas</li>
+          <li><strong>Entrenamiento Auditivo:</strong> Desarrollo de habilidades de escucha</li>
+          <li><strong>Preparación para Actuación:</strong> Ensayos completos y preparación para conciertos</li>
+        </ul>
+
+        <div class="note">
+          <strong>Nota:</strong> VirtuoPlan está diseñado para músicos serios que quieren practicar efectivamente. No es solo un temporizador - es un sistema completo de gestión de práctica que te ayuda a mantenerte organizado y motivado.
+        </div>
+
+        <a href="https://apps.apple.com/app/id6755394560" class="button">Descargar en el App Store</a>
+      </div>
+    </div>
+
+    <!-- SUPPORT SECTION -->
+    <div id="support" class="section hidden">
+
+      <!-- English -->
+      <div class="lang lang-en">
+        <h2>Support & Help</h2>
+        <p>Need help with VirtuoPlan? We're here to assist you.</p>
+        
+        <h3>Contact</h3>
+        <p>Email: <a href="mailto:Bandurria.Apps@gmail.com">Bandurria.Apps@gmail.com</a></p>
+        <p>We typically respond within 24-48 hours.</p>
+        
+        <h3>Frequently Asked Questions</h3>
+        
+        <div class="faq-item">
+          <strong>How do I create a practice plan?</strong>
+          <p>Go to the Practice tab, tap "Create," select your instrument, set your weekly goal and practice days, allocate time to different practice types, and choose the plan duration. The app will automatically generate practice sessions for you.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Can I track multiple instruments?</strong>
+          <p>Yes! Add all your instruments in the Instruments tab. Each instrument tracks its own practice time and can have separate practice plans.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How does the metronome work?</strong>
+          <p>The metronome features Italian tempo markings, tap tempo functionality, and 11 different time signatures. Adjust the BPM with the slider or by tapping, select your time signature, and tap play to start.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>What tuning standards are available?</strong>
+          <p>The tuner supports A=440, 442, 443, and 444 Hz tuning standards. You can also enable transposition for B♭, E♭, F, and A instruments to see note names adjusted for your instrument.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I change the language?</strong>
+          <p>Go to Settings (gear icon in the Learn tab), tap Language, and select your preferred language. The app will need to restart for the change to take full effect.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Is my practice data private?</strong>
+          <p>Yes! All your data is stored locally on your device only. VirtuoPlan never uploads your data to servers or shares it with third parties.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Can I pause practice sessions?</strong>
+          <p>Yes! During a practice session, you can pause and resume as needed. The app tracks only active practice time, excluding paused periods.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do notifications work?</strong>
+          <p>When you create a practice plan, VirtuoPlan schedules notifications 30 minutes before each session. Make sure to enable notifications in iOS Settings for the app.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>What are widgets?</strong>
+          <p>Widgets show your today's practice schedule on your home screen. Add the VirtuoPlan widget to see upcoming sessions at a glance without opening the app.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Can I delete practice sessions?</strong>
+          <p>Yes, you can delete individual sessions by swiping left on them or using the context menu. Note that deleting a session will also remove its practice time from your instrument's total.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>How do I reset all my data?</strong>
+          <p>Go to Settings → Reset All Data. This will permanently delete all instruments, practice plans, and sessions. This action cannot be undone.</p>
+        </div>
+        
+        <h3>Technical Support</h3>
+        <p>For technical issues or questions about VirtuoPlan, please email us with:</p>
+        <ul>
+          <li>Your device model and iOS version</li>
+          <li>Description of the issue</li>
+          <li>Any error messages you see</li>
+          <li>Screenshots if applicable</li>
+        </ul>
+        
+        <h3>System Requirements</h3>
+        <ul>
+          <li>iOS 15.0 or later</li>
+          <li>iPhone or iPad</li>
+          <li>Microphone access required for tuner functionality</li>
+        </ul>
+      </div>
+
+      <!-- German -->
+      <div class="lang lang-de hidden">
+        <h2>Support & Hilfe</h2>
+        <p>Benötigen Sie Hilfe mit VirtuoPlan? Wir sind für Sie da.</p>
+        
+        <h3>Kontakt</h3>
+        <p>E-Mail: <a href="mailto:Bandurria.Apps@gmail.com">Bandurria.Apps@gmail.com</a></p>
+        <p>Wir antworten normalerweise innerhalb von 24-48 Stunden.</p>
+        
+        <h3>Häufig Gestellte Fragen</h3>
+        
+        <div class="faq-item">
+          <strong>Wie erstelle ich einen Übungsplan?</strong>
+          <p>Gehe zum Übung-Tab, tippe auf "Erstellen", wähle dein Instrument, setze dein Wochenziel und Übungstage, verteile Zeit auf verschiedene Übungstypen und wähle die Plandauer. Die App generiert automatisch Übungssitzungen für dich.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Kann ich mehrere Instrumente verfolgen?</strong>
+          <p>Ja! Füge alle deine Instrumente im Instrumente-Tab hinzu. Jedes Instrument verfolgt seine eigene Übungszeit und kann separate Übungspläne haben.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie funktioniert das Metronom?</strong>
+          <p>Das Metronom bietet italienische Tempobezeichnungen, Tap-Tempo-Funktionalität und 11 verschiedene Taktarten. Passe die BPM mit dem Schieberegler oder durch Tippen an, wähle deine Taktart und tippe auf Play zum Starten.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Welche Stimmstandards sind verfügbar?</strong>
+          <p>Das Stimmgerät unterstützt A=440, 442, 443 und 444 Hz Stimmstandards. Du kannst auch Transposition für B♭-, E♭-, F- und A-Instrumente aktivieren, um Notennamen angepasst an dein Instrument zu sehen.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie ändere ich die Sprache?</strong>
+          <p>Gehe zu Einstellungen (Zahnrad-Symbol im Lernen-Tab), tippe auf Sprache und wähle deine bevorzugte Sprache. Die App muss neu gestartet werden, damit die Änderung vollständig wirksam wird.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Sind meine Übungsdaten privat?</strong>
+          <p>Ja! Alle deine Daten werden nur lokal auf deinem Gerät gespeichert. VirtuoPlan lädt deine Daten niemals auf Server hoch oder teilt sie mit Dritten.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Kann ich Übungssitzungen pausieren?</strong>
+          <p>Ja! Während einer Übungssitzung kannst du nach Bedarf pausieren und fortsetzen. Die App verfolgt nur aktive Übungszeit und schließt pausierte Zeiträume aus.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie funktionieren Benachrichtigungen?</strong>
+          <p>Wenn du einen Übungsplan erstellst, plant VirtuoPlan Benachrichtigungen 30 Minuten vor jeder Sitzung. Stelle sicher, dass Benachrichtigungen in den iOS-Einstellungen für die App aktiviert sind.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Was sind Widgets?</strong>
+          <p>Widgets zeigen deinen heutigen Übungsplan auf deinem Startbildschirm. Füge das VirtuoPlan-Widget hinzu, um bevorstehende Sitzungen auf einen Blick zu sehen, ohne die App zu öffnen.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Kann ich Übungssitzungen löschen?</strong>
+          <p>Ja, du kannst einzelne Sitzungen löschen, indem du nach links wischst oder das Kontextmenü verwendest. Beachte, dass das Löschen einer Sitzung auch ihre Übungszeit von der Gesamtzeit deines Instruments entfernt.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>Wie setze ich alle meine Daten zurück?</strong>
+          <p>Gehe zu Einstellungen → Alle Daten zurücksetzen. Dies wird alle Instrumente, Übungspläne und Sitzungen dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden.</p>
+        </div>
+        
+        <h3>Technischer Support</h3>
+        <p>Für technische Probleme oder Fragen zu VirtuoPlan senden Sie uns bitte eine E-Mail mit:</p>
+        <ul>
+          <li>Ihrem Gerätemodell und iOS-Version</li>
+          <li>Beschreibung des Problems</li>
+          <li>Alle Fehlermeldungen, die Sie sehen</li>
+          <li>Screenshots, falls zutreffend</li>
+        </ul>
+        
+        <h3>Systemanforderungen</h3>
+        <ul>
+          <li>iOS 15.0 oder neuer</li>
+          <li>iPhone oder iPad</li>
+          <li>Mikrofonzugriff erforderlich für Stimmgerät-Funktionalität</li>
+        </ul>
+      </div>
+
+      <!-- Spanish -->
+      <div class="lang lang-es hidden">
+        <h2>Soporte y Ayuda</h2>
+        <p>¿Necesitas ayuda con VirtuoPlan? Estamos aquí para asistirte.</p>
+        
+        <h3>Contacto</h3>
+        <p>Email: <a href="mailto:Bandurria.Apps@gmail.com">Bandurria.Apps@gmail.com</a></p>
+        <p>Normalmente respondemos en 24-48 horas.</p>
+        
+        <h3>Preguntas Frecuentes</h3>
+        
+        <div class="faq-item">
+          <strong>¿Cómo creo un plan de práctica?</strong>
+          <p>Ve a la pestaña Práctica, toca "Crear," selecciona tu instrumento, establece tu objetivo semanal y días de práctica, asigna tiempo a diferentes tipos de práctica y elige la duración del plan. La app generará automáticamente sesiones de práctica para ti.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Puedo rastrear múltiples instrumentos?</strong>
+          <p>¡Sí! Agrega todos tus instrumentos en la pestaña Instrumentos. Cada instrumento rastrea su propio tiempo de práctica y puede tener planes de práctica separados.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo funciona el metrónomo?</strong>
+          <p>El metrónomo presenta marcaciones de tempo italianas, funcionalidad de tap tempo y 11 compases diferentes. Ajusta el BPM con el deslizador o tocando, selecciona tu compás y toca reproducir para iniciar.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Qué estándares de afinación están disponibles?</strong>
+          <p>El afinador soporta estándares de afinación A=440, 442, 443 y 444 Hz. También puedes habilitar transposición para instrumentos en B♭, E♭, F y A para ver nombres de notas ajustados para tu instrumento.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo cambio el idioma?</strong>
+          <p>Ve a Ajustes (ícono de engranaje en la pestaña Aprender), toca Idioma y selecciona tu idioma preferido. La app necesitará reiniciarse para que el cambio tenga efecto completo.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Son privados mis datos de práctica?</strong>
+          <p>¡Sí! Todos tus datos se almacenan localmente solo en tu dispositivo. VirtuoPlan nunca sube tus datos a servidores ni los comparte con terceros.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Puedo pausar sesiones de práctica?</strong>
+          <p>¡Sí! Durante una sesión de práctica, puedes pausar y reanudar según sea necesario. La app rastrea solo el tiempo de práctica activo, excluyendo períodos pausados.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo funcionan las notificaciones?</strong>
+          <p>Cuando creas un plan de práctica, VirtuoPlan programa notificaciones 30 minutos antes de cada sesión. Asegúrate de habilitar notificaciones en Ajustes de iOS para la app.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Qué son los widgets?</strong>
+          <p>Los widgets muestran tu horario de práctica de hoy en tu pantalla de inicio. Agrega el widget de VirtuoPlan para ver sesiones próximas de un vistazo sin abrir la app.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Puedo eliminar sesiones de práctica?</strong>
+          <p>Sí, puedes eliminar sesiones individuales deslizando a la izquierda sobre ellas o usando el menú contextual. Ten en cuenta que eliminar una sesión también eliminará su tiempo de práctica del total de tu instrumento.</p>
+        </div>
+        
+        <div class="faq-item">
+          <strong>¿Cómo restablezco todos mis datos?</strong>
+          <p>Ve a Ajustes → Restablecer Todos los Datos. Esto eliminará permanentemente todos los instrumentos, planes de práctica y sesiones. Esta acción no se puede deshacer.</p>
+        </div>
+        
+        <h3>Soporte Técnico</h3>
+        <p>Para problemas técnicos o preguntas sobre VirtuoPlan, envíanos un email con:</p>
+        <ul>
+          <li>Tu modelo de dispositivo y versión de iOS</li>
+          <li>Descripción del problema</li>
+          <li>Cualquier mensaje de error que veas</li>
+          <li>Capturas de pantalla si es aplicable</li>
+        </ul>
+        
+        <h3>Requisitos del Sistema</h3>
+        <ul>
+          <li>iOS 15.0 o posterior</li>
+          <li>iPhone o iPad</li>
+          <li>Acceso al micrófono requerido para funcionalidad del afinador</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PRIVACY SECTION -->
+    <div id="privacy" class="section hidden">
+
+      <!-- English -->
+      <div class="lang lang-en">
+        <h2>Privacy Policy</h2>
+        
+        <h3>No Data Collection</h3>
+        <p>VirtuoPlan does not collect, transmit, or share any personal data or practice information. All tracking data, including practice sessions, instrument information, and progress statistics, stays exclusively on your device.</p>
+        
+        <h3>Local Storage Only</h3>
+        <p>Your practice data, plans, session history, and all other information are stored locally using iOS secure storage with App Groups for widget support. VirtuoPlan has no servers, no cloud sync, and no external data transmission of any kind.</p>
+        
+        <h3>Microphone Access</h3>
+        <p>The tuner feature requires microphone access to detect pitch. Audio data is processed in real-time on your device only and is never recorded, stored, or transmitted. Microphone access is only used when the tuner is actively running.</p>
+        
+        <h3>Notifications</h3>
+        <p>VirtuoPlan uses local notifications to remind you of scheduled practice sessions. These notifications are generated on your device and do not involve any external servers or data transmission.</p>
+        
+        <h3>No Analytics or Tracking</h3>
+        <p>VirtuoPlan does not collect analytics, crash reports, usage statistics, or any tracking data. We have no visibility into how you use the app or what you practice.</p>
+        
+        <h3>Your Complete Control</h3>
+        <p>You have full control over your data:</p>
+        <ul>
+          <li>All data is stored only on your device</li>
+          <li>When you delete the app, all your data is permanently deleted</li>
+          <li>No copies of your data exist with the developer or any third party</li>
+          <li>You can reset all data at any time from Settings</li>
+        </ul>
+        
+        <h3>Widgets</h3>
+        <p>Widget data is shared between the main app and widgets using iOS App Groups, a secure local storage mechanism. No data leaves your device.</p>
+        
+        <h3>Updates to This Policy</h3>
+        <p>We may update this privacy policy from time to time. Any changes will be posted on this page. The core principle will always remain: your data stays on your device.</p>
+        
+        <h3>Contact</h3>
+        <p>If you have questions about privacy, contact us at: <a href="mailto:Bandurria.Apps@gmail.com">Bandurria.Apps@gmail.com</a></p>
+        
+        <p><em>Last updated: January 2025</em></p>
+      </div>
+
+      <!-- German -->
+      <div class="lang lang-de hidden">
+        <h2>Datenschutzerklärung</h2>
+        
+        <h3>Keine Datenerfassung</h3>
+        <p>VirtuoPlan sammelt, überträgt oder teilt keine persönlichen Daten oder Übungsinformationen. Alle Tracking-Daten, einschließlich Übungssitzungen, Instrumenteninformationen und Fortschrittsstatistiken, bleiben ausschließlich auf Ihrem Gerät.</p>
+        
+        <h3>Nur Lokale Speicherung</h3>
+        <p>Ihre Übungsdaten, Pläne, Sitzungshistorie und alle anderen Informationen werden lokal mit der sicheren iOS-Speicherung mit App-Gruppen für Widget-Unterstützung gespeichert. VirtuoPlan hat keine Server, keine Cloud-Synchronisation und keine externe Datenübertragung jeglicher Art.</p>
+        
+        <h3>Mikrofonzugriff</h3>
+        <p>Die Stimmgerät-Funktion benötigt Mikrofonzugriff zur Tonhöhenerkennung. Audiodaten werden nur in Echtzeit auf Ihrem Gerät verarbeitet und niemals aufgezeichnet, gespeichert oder übertragen. Mikrofonzugriff wird nur verwendet, wenn das Stimmgerät aktiv läuft.</p>
+        
+        <h3>Benachrichtigungen</h3>
+        <p>VirtuoPlan verwendet lokale Benachrichtigungen, um Sie an geplante Übungssitzungen zu erinnern. Diese Benachrichtigungen werden auf Ihrem Gerät generiert und beinhalten keine externen Server oder Datenübertragung.</p>
+        
+        <h3>Keine Analysen oder Tracking</h3>
+        <p>VirtuoPlan sammelt keine Analysen, Absturzberichte, Nutzungsstatistiken oder Tracking-Daten. Wir haben keine Einsicht, wie Sie die App verwenden oder was Sie üben.</p>
+        
+        <h3>Ihre Vollständige Kontrolle</h3>
+        <p>Sie haben die volle Kontrolle über Ihre Daten:</p>
+        <ul>
+          <li>Alle Daten werden nur auf Ihrem Gerät gespeichert</li>
+          <li>Wenn Sie die App löschen, werden alle Ihre Daten dauerhaft gelöscht</li>
+          <li>Es existieren keine Kopien Ihrer Daten beim Entwickler oder Dritten</li>
+          <li>Sie können alle Daten jederzeit aus den Einstellungen zurücksetzen</li>
+        </ul>
+        
+        <h3>Widgets</h3>
+        <p>Widget-Daten werden zwischen der Haupt-App und Widgets mit iOS App-Gruppen geteilt, einem sicheren lokalen Speichermechanismus. Keine Daten verlassen Ihr Gerät.</p>
+        
+        <h3>Aktualisierungen dieser Richtlinie</h3>
+        <p>Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren. Alle Änderungen werden auf dieser Seite veröffentlicht. Das Kernprinzip bleibt immer dasselbe: Ihre Daten bleiben auf Ihrem Gerät.</p>
+        
+        <h3>Kontakt</h3>
+        <p>Bei Fragen zum Datenschutz kontaktieren Sie uns unter: <a href="mailto:Bandurria.Apps@gmail.com">Bandurria.Apps@gmail.com</a></p>
+        
+        <p><em>Zuletzt aktualisiert: Januar 2025</em></p>
+      </div>
+
+      <!-- Spanish -->
+      <div class="lang lang-es hidden">
+        <h2>Política de Privacidad</h2>
+        
+        <h3>No se Recopilan Datos</h3>
+        <p>VirtuoPlan no recopila, transmite ni comparte ningún dato personal o información de práctica. Todos los datos de seguimiento, incluidas sesiones de práctica, información de instrumentos y estadísticas de progreso, permanecen exclusivamente en tu dispositivo.</p>
+        
+        <h3>Solo Almacenamiento Local</h3>
+        <p>Tus datos de práctica, planes, historial de sesiones y toda otra información se almacenan localmente usando el almacenamiento seguro de iOS con App Groups para soporte de widgets. VirtuoPlan no tiene servidores, no tiene sincronización en la nube y no hay transmisión externa de datos de ningún tipo.</p>
+        
+        <h3>Acceso al Micrófono</h3>
+        <p>La función de afinador requiere acceso al micrófono para detectar el tono. Los datos de audio se procesan en tiempo real solo en tu dispositivo y nunca se graban, almacenan o transmiten. El acceso al micrófono solo se usa cuando el afinador está activamente en ejecución.</p>
+        
+        <h3>Notificaciones</h3>
+        <p>VirtuoPlan usa notificaciones locales para recordarte de sesiones de práctica programadas. Estas notificaciones se generan en tu dispositivo y no involucran ningún servidor externo o transmisión de datos.</p>
+        
+        <h3>Sin Análisis o Rastreo</h3>
+        <p>VirtuoPlan no recopila análisis, informes de fallos, estadísticas de uso o datos de rastreo. No tenemos visibilidad de cómo usas la app o qué practicas.</p>
+        
+        <h3>Tu Control Completo</h3>
+        <p>Tienes control total sobre tus datos:</p>
+        <ul>
+          <li>Todos los datos se almacenan solo en tu dispositivo</li>
+          <li>Cuando eliminas la app, todos tus datos se eliminan permanentemente</li>
+          <li>No existen copias de tus datos con el desarrollador o terceros</li>
+          <li>Puedes restablecer todos los datos en cualquier momento desde Ajustes</li>
+        </ul>
+        
+        <h3>Widgets</h3>
+        <p>Los datos de widgets se comparten entre la app principal y los widgets usando iOS App Groups, un mecanismo de almacenamiento local seguro. Ningún dato sale de tu dispositivo.</p>
+        
+        <h3>Actualizaciones de esta Política</h3>
+        <p>Podemos actualizar esta política de privacidad de vez en cuando. Cualquier cambio se publicará en esta página. El principio central siempre permanecerá: tus datos permanecen en tu dispositivo.</p>
+        
+        <h3>Contacto</h3>
+        <p>Si tienes preguntas sobre privacidad, contáctanos en: <a href="mailto:Bandurria.Apps@gmail.com">Bandurria.Apps@gmail.com</a></p>
+        
+        <p><em>Última actualización: Enero 2025</em></p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    © 2025 VirtuoPlan. All rights reserved. | Contact: <a href="mailto:Bandurria.Apps@gmail.com">Bandurria.Apps@gmail.com</a>
+  </footer>
+</body>
+</html>
